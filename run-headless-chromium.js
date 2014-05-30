@@ -24,7 +24,7 @@ var r_logMessageFormat = new RegExp(
     // tickcount is optional
     '(?:\\d+:)?' +
     // Log severity = $1
-    '(INFO|WARNING|ERROR|ERROR_REPORT|FATAL|VERBOSE\d*|UNKNOWN)' +
+    '(INFO|WARNING|ERROR|ERROR_REPORT|FATAL|VERBOSE\\d*|UNKNOWN)' +
     // source = $2 and line number = $3
     ':(.*?)\\((\\d+)\\)' +
     '\\] ' +
