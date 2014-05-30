@@ -148,6 +148,9 @@ xvfb.start(function(err, xvfbProcess) {
 
     // Whether the last line was a message written to the JavaScript console.
     var isJSConsole = false;
+    // Whether the last line is output from Chromium that is printed to stdout.
+    // True by default, so that output from e.g. --version is always printed.
+    var isAllowedOutput = true;
     function printLine(line) {
         var parsedline = r_logMessageFormat.exec(line);
         if (!parsedline) {
@@ -155,7 +158,7 @@ xvfb.start(function(err, xvfbProcess) {
             if (isJSConsole) {
                 line = line.replace(r_logMessageConsoleEnd, '');
                 printJsConsoleMessage(line);
-            } else if (!r_logMessageIgnore.test(line)) {
+            } else if (isAllowedOutput && !r_logMessageIgnore.test(line)) {
                 console.log(line);
             }
             return;
@@ -179,7 +182,8 @@ xvfb.start(function(err, xvfbProcess) {
             // Ignore non-JS console messages
             // Ok, show Chrome errors if they appear, to prevent having failures and
             // no debugging information at all.
-            if (r_logMessageSeverity.test(log_severity) && !r_logMessageIgnore.test(log_message)) {
+            isAllowedOutput = r_logMessageSeverity.test(log_severity) && !r_logMessageIgnore.test(log_message);
+            if (isAllowedOutput) {
                 console.log(log_severity + ':' + log_source + '(' + log_lineno + '): ' + log_message);
             }
         }
