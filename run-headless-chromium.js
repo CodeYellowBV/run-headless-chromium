@@ -74,7 +74,7 @@ var userDataDir = path.join(os.tmpdir(), 'chromium_headless_user_data_directory'
     }
     if (!hasFlag('user-data-dir')) {
         chromiumFlags.push('--no-first-run');
-        chromiumFlags.push('--user-data-dir="' + userDataDir + '"');
+        chromiumFlags.push('--user-data-dir=' + userDataDir);
     }
     if (!hasFlag('allow-file-access-from-files')) {
         chromiumFlags.push('--allow-file-access-from-files');
