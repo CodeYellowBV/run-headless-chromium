@@ -24,7 +24,7 @@ var r_logMessageFormat = new RegExp(
     // tickcount is optional
     '(?:\\d+:)?' +
     // Log severity = $1
-    '(INFO|WARNING|ERROR|ERROR_REPORT|FATAL|VERBOSE|UNKNOWN)' +
+    '(INFO|WARNING|ERROR|ERROR_REPORT|FATAL|VERBOSE\d*|UNKNOWN)' +
     // source = $2 and line number = $3
     ':(.*?)\\((\\d+)\\)' +
     '\\] ' +
@@ -89,7 +89,7 @@ var userDataDir = path.join(os.tmpdir(), 'chromium_headless_user_data_directory'
     function hasFlag(flagname) {
         return process.argv.some(function(flag) {
             flag = flag.split('=', 1)[0];
-            return '--' + flag == flagname;
+            return flag == '--' + flagname;
         });
     }
 })();
