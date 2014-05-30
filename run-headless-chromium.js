@@ -6,7 +6,7 @@ if (require.main !== module) {
 
 var os = require('os');
 var path = require('path');
-var rmraf = require('rmraf');
+var rmraf = require('rimraf');
 var spawn = require('child_process').spawn;
 var whichSync = require('which').sync;
 var Xvfb = require('xvfb');
@@ -110,6 +110,7 @@ xvfb.start(function(err, xvfbProcess) {
     var crProcessExited = false;
     crProcess.on('exit', function() {
         crProcessExited = true;
+        quitXvfbAndChromium();
     });
     _toggle_crProcessEvents(true);
     function _toggle_crProcessEvents(register) {
@@ -154,6 +155,8 @@ xvfb.start(function(err, xvfbProcess) {
             if (isJSConsole) {
                 line = line.replace(r_logMessageConsoleEnd, '');
                 printJsConsoleMessage(line);
+            } else if (!r_logMessageIgnore.test(line)) {
+                console.log(line);
             }
             return;
         }
@@ -170,7 +173,7 @@ xvfb.start(function(err, xvfbProcess) {
             printJsConsoleMessage(log_message);
 
             if (log_severity == 'INFO' && log_message == 'All tests completed!') {
-                quitChromium();
+                quitXvfbAndChromium();
             }
         } else {
             // Ignore non-JS console messages
@@ -182,7 +185,13 @@ xvfb.start(function(err, xvfbProcess) {
         }
     }
 
-    function quitChromium() {
+    var hasQuitChromium = false;
+    function quitXvfbAndChromium() {
+        if (hasQuitChromium) {
+            return;
+        }
+        hasQuitChromium = true;
+
         _toggle_crProcessEvents(false);
         xvfb.stop(function(err) {
             if (err) {
