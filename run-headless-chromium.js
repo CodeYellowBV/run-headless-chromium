@@ -96,7 +96,17 @@ var userDataDir = path.join(os.tmpdir(), 'chromium_headless_user_data_directory'
 
 
 // Start the virtual X Framebuffer
-var xvfb = new Xvfb({ silent: true });
+var xvfb = new Xvfb({
+    silent: true,
+    // Use the same parameters as used by Chromium's test bots:
+    // https://src.chromium.org/viewvc/chrome/trunk/tools/build/scripts/slave/xvfb.py?revision=233700&#l75
+    xvfb_args: [
+        '-screen',
+        '0',
+        '1024x768x24',
+        '-ac'
+    ]
+});
 xvfb.start(function(err, xvfbProcess) {
     if (err) {
         console.error('Failed to start Xvfb: ' + err);
