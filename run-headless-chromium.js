@@ -70,7 +70,7 @@ var userDataDir = path.join(os.tmpdir(), 'chromium_headless_user_data_directory'
     if (!chromiumFlags.length) {
         console.log('Usage: ' + process.argv[1].split('/').pop() + ' flags passed to Chromium');
         console.log('Require at least one flag');
-        process.exit();
+        process.exit(-1);
     }
     if (!hasFlag('user-data-dir')) {
         chromiumFlags.push('--no-first-run');
@@ -120,7 +120,7 @@ xvfb.start(function(err, xvfbProcess) {
     var crProcessExited = false;
     crProcess.on('exit', function() {
         crProcessExited = true;
-        quitXvfbAndChromium();
+        quitXvfbAndChromium(-1);
     });
     _toggle_crProcessEvents(true);
     function _toggle_crProcessEvents(register) {
@@ -185,8 +185,12 @@ xvfb.start(function(err, xvfbProcess) {
             log_message = log_message.replace(r_logMessageConsoleEnd, '');
             printJsConsoleMessage(log_message);
 
-            if (log_severity == 'INFO' && log_message == 'All tests completed!') {
-                quitXvfbAndChromium();
+            if (log_severity == 'INFO') {
+                var completionMessage = /^All tests completed!(-?\d*)$/.exec(log_message);
+                if (completionMessage) {
+                    var exitCode = completionMessage[1] & 0xFF;
+                    quitXvfbAndChromium(exitCode);
+                }
             }
         } else {
             // Ignore non-JS console messages
@@ -200,7 +204,7 @@ xvfb.start(function(err, xvfbProcess) {
     }
 
     var hasQuitChromium = false;
-    function quitXvfbAndChromium() {
+    function quitXvfbAndChromium(exitCode) {
         if (hasQuitChromium) {
             return;
         }
@@ -219,7 +223,7 @@ xvfb.start(function(err, xvfbProcess) {
                 if (err) {
                     console.error('Failed to remove ' + userDataDir + ': ' + err);
                 }
-                process.exit();
+                process.exit(exitCode);
             });
         });
     }

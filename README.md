@@ -18,6 +18,11 @@ This behavior can be controlled by two environment variables:
   Allowed values: Any regular expression (ECMAScript/JavaScript syntax),
   defaults to `kwallet`.
 
+Any webpage that is loaded using run-headless-chromium can close Chromium and exit the process
+by sending the magic string `console.log("All tests completed!");`.
+Insert an integer at the end of the string to change the exit code of this program from 0 to
+some other integer within the 0 - 255 range.
+
 ## Example
 Headless Chromium is ideal for unit testing, e.g. with [Jasmine](http://jasmine.github.io/):
 
@@ -36,9 +41,11 @@ var consoleReporter = new jasmine.ConsoleReporter(
         // if desired, i.e. it expects console.log to behave as print, not println.
         console.log(message + '\x03\b');
     },
-    function onComplete() {
+    function onComplete(runner) {
+        // 0 = success, 1 = failure
+        var exitCode = runner.results().failedCount > 0 ? 1 : 0;
         // Magic string to signal completion of the tests
-        console.info('All tests completed!');
+        console.info('All tests completed!' + exitCode);
     },
     // showColors (whether to generate colorful output)
     true
@@ -61,8 +68,9 @@ var consoleReporter = new jasmine.ConsoleReporter({
     print: function print(message) {
         console.log(message + '\x03\b');
     },
-    onComplete: function onComplete() {
-        console.info('All tests completed!');
+    onComplete: function onComplete(isSuccess) {
+        var exitCode = isSuccess ? 0 : 1;
+        console.info('All tests completed!' + exitCode);
     },
     showColors: true
 });
