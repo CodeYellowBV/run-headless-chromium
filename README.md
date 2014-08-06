@@ -13,11 +13,10 @@ This behavior can be controlled by two environment variables:
 
 * `LOG_CR_VERBOSITY` - Only print messages from Chromium with this verbosity level.  
   Allowed values: Any permutation of `INFO|WARNING|ERROR|ERROR_REPORT|FATAL|VERBOSE|UNKNOWN`,
-  defaults to `ERROR|ERROR_REPORT|FATAL`.
+  defaults to `ERROR|ERROR_REPORT|FATAL`. Use `LOG_CR_VERBOSITY=.` to show all messages.
 * `LOG_CR_HIDE_PATTERN` - Exclude messages matching this pattern (case-insensitive).  
   Allowed values: Any regular expression (ECMAScript/JavaScript syntax),
   defaults to `kwallet`.
-
 
 ## Example
 Headless Chromium is ideal for unit testing, e.g. with [Jasmine](http://jasmine.github.io/):
