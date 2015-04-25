@@ -64,6 +64,13 @@ try {
     }
 }
 
+try {
+    whichSync('Xvfb');
+} catch (e) {
+    console.error('Xvfb not found. Please install xvfb before trying again.');
+    process.exit(-1);
+}
+
 var chromiumFlags = process.argv.slice(2);
 var userDataDir = path.join(os.tmpdir(), 'chromium_headless_user_data_directory' + Math.random());
 (function checkFlagsToBePassedToChromium() {
@@ -110,6 +117,7 @@ var xvfb = new Xvfb({
 xvfb.start(function(err, xvfbProcess) {
     if (err) {
         console.error('Failed to start Xvfb: ' + err);
+        process.exit(-1);
         return;
     }
 
