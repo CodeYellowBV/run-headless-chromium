@@ -1,6 +1,6 @@
 {
   "name": "run-headless-chromium",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Run Chromium or Google Chrome in headless mode and forward the JS console output to the standard output.",
   "author": "Rob Wu <rob@robwu.nl> (https://robwu.nl/)",
   "bin": "./run-headless-chromium.js",
@@ -8,6 +8,6 @@
   "dependencies": {
     "rimraf": "2.2.8",
     "which": "1.0.5",
-    "xvfb": "Rob--W/node-xvfb#1c518a9ab0"
+    "xvfb": "Rob--W/node-xvfb#6c1541fafd"
   }
 }
