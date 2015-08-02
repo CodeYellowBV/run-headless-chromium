@@ -8,6 +8,6 @@
   "dependencies": {
     "rimraf": "2.2.8",
     "which": "1.0.5",
-    "xvfb": "Rob--W/node-xvfb#6c1541fafd"
+    "xvfb": "0.2.2"
   }
 }
