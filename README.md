@@ -1,5 +1,7 @@
 Starts Chromium or Google Chrome in headless mode (using Xvfb) and forwards the output from JavaScript console to stdout.
 
+Xvfb only works on Linux and OS X; Windows is not supported.
+
 ## Usage
 `./run-headless-chromium.js [options]`
 
@@ -17,6 +19,7 @@ This behavior can be controlled by two environment variables:
 * `LOG_CR_HIDE_PATTERN` - Exclude messages matching this pattern (case-insensitive).  
   Allowed values: Any regular expression (ECMAScript/JavaScript syntax),
   defaults to `kwallet`.
+* `CHROMIUM_EXE_PATH` - Set the path to the Chromium / Google Chrome executable.
 
 Any webpage that is loaded using run-headless-chromium can close Chromium and exit the process
 by sending the magic string `console.log("All tests completed!");`.

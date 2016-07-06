@@ -54,14 +54,31 @@ var NOT_END_OF_LINE = '\x03\b';
 
 // Locate Chromium and determine flags to be used..
 var chromiumBinary;
-try {
-    whichSync(chromiumBinary = 'chromium');
-} catch (e) {
+[
+    // Allow override
+    process.env.CHROMIUM_EXE_PATH,
+    // Linux
+    'chromium',
+    'google-chrome',
+    'chromium-browser',
+    // OS X
+    '/Applications/Chromium.app/Contents/MacOS/Chromium',
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+].some(function(binary) {
     try {
-        whichSync(chromiumBinary = 'google-chrome');
+        if (binary) {
+            whichSync(binary);
+            chromiumBinary = binary;
+            return true;
+        }
     } catch (e) {
-        whichSync(chromiumBinary = 'chromium-browser');
     }
+});
+
+if (!chromiumBinary) {
+    console.error('Cannot find Chromium/Chrome executable. Please install it, or');
+    console.error('put its location in the CHROMIUM_EXE_PATH environment variable.');
+    process.exit(-1);
 }
 
 try {
