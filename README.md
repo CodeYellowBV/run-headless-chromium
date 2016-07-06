@@ -82,3 +82,7 @@ jasmineEnv.addReporter(consoleReporter);
 jasmineEnv.execute();
 </script>
 ```
+
+## License
+
+MIT

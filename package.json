@@ -4,6 +4,7 @@
   "description": "Run Chromium or Google Chrome in headless mode and forward the JS console output to the standard output.",
   "author": "Rob Wu <rob@robwu.nl> (https://robwu.nl/)",
   "bin": "./run-headless-chromium.js",
+  "license": "MIT",
   "repository": "https://github.com/CodeYellowBV/run-headless-chromium",
   "dependencies": {
     "rimraf": "2.2.8",
