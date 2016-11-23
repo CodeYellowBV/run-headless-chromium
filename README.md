@@ -83,6 +83,35 @@ jasmineEnv.execute();
 </script>
 ```
 
+### Node.js
+The following example shows how to start `run-headless-chromium` from Node.js,
+and terminate the process in a graceful way. Note that the page from the example
+does not call `console.info('All tests completed!0')`, so the browser would stay
+around indefinitely if we do not explicitly kill it.
+
+```javascript
+// (Assuming that node_modules is in the current working directory.)
+var runHeadlessChromiumBin = require('path').resolve(__dirname,
+    'node_modules/.bin/run-headless-chromium');
+
+var proc = require('child_process').spawn(runHeadlessChromiumBin, [
+    // Flags forwarded to Chromium:
+    'https://example.com/some_page_that_does_not_print_exit_message',
+], {
+    stdio: 'inherit',
+});
+proc.on('close', function() {
+    clearTimeout(delayedExit);
+    console.log('Headless Chromium exited!');
+});
+var delayedExit = setTimeout(function() {
+    console.log('Chrome did not exit within a few seconds, sending SIGINT...');
+    // Graceful exit - allow run-headless-chromium to exit Chrome and Xvfb.
+    proc.kill('SIGINT');
+    // If you do proc.kill(); then Chrome and Xvfb may still hang around.
+}, 5000);
+```
+
 ## License
 
 MIT

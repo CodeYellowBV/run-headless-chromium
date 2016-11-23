@@ -147,6 +147,15 @@ xvfb.start(function(err, xvfbProcess) {
         crProcessExited = true;
         quitXvfbAndChromium(-1);
     });
+    process.once('SIGINT', function() {
+        if (!crProcessExited) {
+            // This should trigger the 'exit' event on crProcess, which in turn
+            // cleans up Xvfb.
+            crProcess.kill();
+        }
+        // If `crProcessExited` is true and we received the event, then we
+        // are still in the process of exiting Xvfb. So ignore the signal.
+    });
     _toggle_crProcessEvents(true);
     function _toggle_crProcessEvents(register) {
         var methodName = register ? 'on' : 'removeListener';
