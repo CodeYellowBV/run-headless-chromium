@@ -1,9 +1,5 @@
 #!/usr/bin/env node
 'use strict';
-if (require.main !== module) {
-    throw new Error('This is not a requirable module. Use child_process to launch this module!');
-}
-
 var os = require('os');
 var path = require('path');
 var rmraf = require('rimraf');

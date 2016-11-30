@@ -90,11 +90,11 @@ does not call `console.info('All tests completed!0')`, so the browser would stay
 around indefinitely if we do not explicitly kill it.
 
 ```javascript
-// (Assuming that node_modules is in the current working directory.)
-var runHeadlessChromiumBin = require('path').resolve(__dirname,
-    'node_modules/.bin/run-headless-chromium');
+// spawn has the same API as child_process.spawn, minus the command argument.
+// See the "spawn" method at https://nodejs.org/api/child_process.html
+var spawnHeadlessChromium = require('run-headless-chromium').spawn;
 
-var proc = require('child_process').spawn(runHeadlessChromiumBin, [
+var proc = spawnHeadlessChromium([
     // Flags forwarded to Chromium:
     'https://example.com/some_page_that_does_not_print_exit_message',
 ], {
