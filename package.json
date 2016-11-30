@@ -1,6 +1,6 @@
 {
   "name": "run-headless-chromium",
-  "version": "0.0.14",
+  "version": "0.1.0",
   "description": "Run Chromium or Google Chrome in headless mode and forward the JS console output to the standard output.",
   "author": "Rob Wu <rob@robwu.nl> (https://robwu.nl/)",
   "bin": "./run-headless-chromium.js",
