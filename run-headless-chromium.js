@@ -11,12 +11,14 @@ var Xvfb = require('xvfb');
 // [pid:tid:MMDD/hhmmss:tickcount:severity:source(lineno)] LOGMESSAGEHERE
 // pid, tid, tickcount are optional. For the console, source is always "CONSOLE".
 // http://src.chromium.org/viewvc/chrome/trunk/src/base/logging.cc?revision=265460&view=markup#l674
+// In Chrome 56, the format changed (milliseconds were added in the timestamp, and the timestamp is optional).
+// https://chromium.googlesource.com/chromium/src/+/dfb10e743132bac81702c2a3685f4c7c782d368f/base/logging.cc#765
 var r_logMessageFormat = new RegExp(
     '^\\[' +
     // pid and tid are optional
     '(?:\\d+:){0,2}' +
     // We don't care about the date
-    '\\d{4}/\\d{6}:' +
+    '(?:\\d{4}/\\d{6}(?:\\.(?:\\d{3}){1,2})?:)?' +
     // tickcount is optional
     '(?:\\d+:)?' +
     // Log severity = $1
